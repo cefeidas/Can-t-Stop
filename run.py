@@ -54,31 +54,32 @@ print(f'Great {P2}, you will be player Two!')
 P3 = input("And the remaining one is the oldest. What's your name, oh! old, wise person? ")
 
 def turn(player):
-    numbers = [random.randint(1, 6) for i in range(4)]
-    print(f' {player}, your first roll is: {numbers}')
-    dice_choice = int(input('From those four numbers, please chose one or two combinations of two dice summed: '))
-    valid_sum = False
-    for i in range(len(numbers)):
-        for j in range(i+1, len(numbers)):
-            if numbers[i] + numbers[j] == dice_choice:
-                valid_sum = True
+    while True:
+        numbers = [random.randint(1, 6) for i in range(4)]
+        print(f' {player}, your first roll is: {numbers}')
+        dice_choice = int(input('From those four numbers, please chose one or two combinations of two dice summed: '))
+        valid_sum = False
+        for i in range(len(numbers)):
+            for j in range(i+1, len(numbers)):
+                if numbers[i] + numbers[j] == dice_choice:
+                    valid_sum = True
+                    break
+            if valid_sum:
                 break
+
         if valid_sum:
-            break
+            print(f"{dice_choice} is a valid sum of two numbers in the list {numbers}. The worksheet has been updated")
+        else:
+           print(f"{dice_choice} is not a valid sum of two numbers in the list {numbers}. Please, try again")
 
-    if valid_sum:
-        print(f"{dice_choice} is a valid sum of two numbers in the list {numbers}. The worksheet has been updated")
-    else:
-        print(f"{dice_choice} is not a valid sum of two numbers in the list {numbers}. Please, try again")
-
-def update_worksheet(data,worksheet):
+def update_worksheet(row, col, value):
     """
     Receives a list of integers to be inserted into a worksheet 
     Update the relevant worksheet with the data provided
     """
     print(f"Updating {worksheet} worksheet...\n")
-    worksheet_to_update = SHEET.worksheet(worksheet)
-    worksheet_to_update.append_row(data)
+    worksheet_to_update = SHEET.worksheet('board')
+    worksheet_to_update.append_cell(row, col, value)
     print(f"{worksheet} worksheet updated successfully.\n")
 
 turn(P1)
