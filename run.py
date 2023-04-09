@@ -3,6 +3,7 @@
 # Write your code to expect a terminal of 80 characters wide and 24 rows high
 
 import gspread
+import random
 from google.oauth2.service_account import Credentials 
 
 SCOPE = [
@@ -42,16 +43,34 @@ print('On each turn, they roll four dice and try to create one of their target n
 
 print("let's get started!")
 
-P1 = input('player one, what is your name?')
+P1 = input('Hi players, who is the youngest person in the room? ')
 
-P2 = input('player two, what is your name?')
+print(f'Great {P1}, you will be player one!')
 
-P3 = input('player three, what is your name?')
+P2 = input('And who is the second youngest? ')
 
-print(f'Great! {P1}, {P2} and {P3}. Next thing I need to know is your age')
+print(f'Great {P2}, you will be player Two!')
 
-age_P1 = input(f'{P1}, How old are you?')
+P3 = input("And the remaining one is the oldest. What's your name, oh! old, wise person? ")
 
-age_P2 = input(f'{P2}, How old are you?')
+def turn(player):
+    numbers = [random.randint(1, 6) for i in range(4)]
+    print(f' {player}, your first roll is: {numbers}')
+    dice_choice = int(input('From those four numbers, please chose one or two combinations of two dice summed: '))
+    valid_sum = False
+    for i in range(len(numbers)):
+        for j in range(i+1, len(numbers)):
+            if numbers[i] + numbers[j] == dice_choice:
+                valid_sum = True
+                break
+        if valid_sum:
+            break
 
-age_P3 = input(f'{P3}, How old are you?')
+    if valid_sum:
+        print(f"{dice_choice} is a valid sum of two numbers in the list {numbers}. The worksheet has been updated")
+    else:
+        print(f"{dice_choice} is not a valid sum of two numbers in the list {numbers}. Please, try again")
+
+
+turn(P1)
+
