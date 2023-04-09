@@ -41,3 +41,17 @@ print('Gameplay:')
 print('On each turn, they roll four dice and try to create one of their target numbers by combining two of the dice. For example, if a player has chosen the columns 4, 8, and 10 as their targets, they might try to create the number 8 by rolling a 3 and a 5. If the player is successful, they can move one of their markers up to the corresponding column on the board. If they fail to create a valid combination, their turn ends and they make no progress. The player can choose to continue rolling the remaining two dice to try and make progress on another target column, but they risk losing all progress on their turn if they fail to make a valid combination with any of the dice. A player can also choose to stop rolling after any roll and advance one of their markers one space in the corresponding column. This is a safe move, but it can be slower than trying to create a valid combination with the remaining dice. If a player reaches the top of a target column, they lock that column and can no longer roll for that target. They can still try to make progress on their remaining targets. If a player fails to make progress on any of their target columns during their turn, they lose all progress and their turn ends. Their opponent then takes their turn. The first player to reach the top of any three columns wins the game.')
 
 print("let's get started!")
+
+P1 = input('player one, what is your name?')
+
+P2 = input('player two, what is your name?')
+
+P3 = input('player three, what is your name?')
+
+print(f'Great! {P1}, {P2} and {P3}. Next thing I need to know is your age')
+
+age_P1 = input(f'{P1}, How old are you?')
+
+age_P2 = input(f'{P2}, How old are you?')
+
+age_P3 = input(f'{P3}, How old are you?')
