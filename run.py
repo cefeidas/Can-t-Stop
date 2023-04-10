@@ -55,6 +55,9 @@ print(f'Great {P2}, you will be player Two!')
 P3 = input("And the remaining one is the oldest. What's your name, oh! old, wise person? ")
 
 def did_anybody_win():
+    """
+    Checks if the requirements of winning the game are met by any player.
+    """ 
     win_or_not = input("Did anybody win? ")
     if win_or_not == 'Y':
         return True
@@ -100,6 +103,9 @@ def turn(player):
     return result
 
 def check_data():
+    """
+    Check if the answers provided in turn() are correct. Update the list each character chooses in the early stages of the game
+    """
     print('Checking data from last turn...')
 
 def update_worksheet():
@@ -112,14 +118,11 @@ def update_worksheet():
     print(f"{worksheet} worksheet updated successfully.\n")
     """
 
-def check_worksheet():
-    print('checking worksheet...')
-
-def update_list():
-    print('updating list...')
-
 
 def who_plays_now():
+    """
+    checks the lists and decide if any player has won
+    """
     print('defining who plays now...')
 
 
@@ -135,8 +138,6 @@ def main():
         turn(player)
         check_data()
         update_worksheet()
-        check_worksheet()
-        update_list()
         who_plays_now()
     print('Congratulations!! Some person won the game!')
 
