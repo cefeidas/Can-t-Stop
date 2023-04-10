@@ -82,9 +82,17 @@ def turn(player):
             if not valid_combination:
                 print(f"{dice_choice} is not a valid combination of two numbers in the list {numbers}. Please, try again.")
             else:
-                print(f"{dice_choice} is a valid combination of two numbers in the list {numbers}. Updating worksheet...\n")
+                print(f"{dice_choice} is a valid combination of two numbers in the list {numbers}.")
                 break
         break
+    checking_turn = input("Can you validly add any of the numbers to your list? Y/N ").upper()
+    print("I'll check that in a minute(no offense)")
+    want_continue = input("In case you can, do you want to continue rolling the dice? Y/N ").upper()
+    result = [dice_choice, checking_turn, want_continue]
+    print(result)
+    return result
+
+
 
 def update_worksheet(row, col, value):
     """
@@ -103,15 +111,6 @@ def main():
     player = players_list[0]
     turn(player)
     
-
-    continue_rolling = input("Do you want to continue rolling the dice? Y/N").upper()
-    if continue_rolling == Y:
-        turn(players_list[i])
-    elif continue_rolling == N:
-        turn(players_list[i+1])
-
-
-
 
 turn(P1)
 
