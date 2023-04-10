@@ -54,6 +54,13 @@ print(f'Great {P2}, you will be player Two!')
 
 P3 = input("And the remaining one is the oldest. What's your name, oh! old, wise person? ")
 
+def did_anybody_win():
+    win_or_not = input("Did anybody win? ")
+    if win_or_not == 'Y':
+        return True
+    elif win_or_not == 'N':
+        return False
+
 def turn(player):
     """
     Defines all logical steps that take place on each turn
@@ -92,25 +99,48 @@ def turn(player):
     print(result)
     return result
 
+def check_data():
+    print('Checking data from last turn...')
 
-
-def update_worksheet(row, col, value):
+def update_worksheet():
     """
     Takes the result of each turn and updates the char sheet accordingly.
     """
-    print(f"Updating {worksheet} worksheet...\n")
-    worksheet_to_update = SHEET.worksheet('board')
+    print("Updating worksheet...")
+    """worksheet_to_update = SHEET.worksheet('board')
     worksheet_to_update.append_cell(row, col, value)
     print(f"{worksheet} worksheet updated successfully.\n")
+    """
+
+def check_worksheet():
+    print('checking worksheet...')
+
+def update_list():
+    print('updating list...')
+
+
+def who_plays_now():
+    print('defining who plays now...')
+
+
+
+
 
 def main():
     """
     Controls the flow of the game, calling each turn and each worksheet update
     """
-    players_list = [P1, P2, P3]
-    player = players_list[0]
-    turn(player)
+    player = [P1]
+    while not did_anybody_win():
+        turn(player)
+        check_data()
+        update_worksheet()
+        check_worksheet()
+        update_list()
+        who_plays_now()
+    print('Congratulations!! Some person won the game!')
+
     
 
-turn(P1)
+main()
 
