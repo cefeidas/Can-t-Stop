@@ -57,28 +57,39 @@ def turn(player):
     while True:
         numbers = [random.randint(1, 6) for i in range(4)]
         print(f' {player}, your first roll is: {numbers}')
-        
+
         while True:
+            dice_choice = input('From those four numbers, please choose one or two combinations of two dice summed (e.g. 1 3): ')
+            dice_choice = dice_choice.split()
+
+            if len(dice_choice) != 2:
+                print('Please enter exactly two numbers separated by a space.')
+                continue
+
             try:
-                dice_choice = int(input('From those four numbers, please choose one or two combinations of two dice summed: '))
-                valid_sum = False
-                
-                for i in range(len(numbers)):
-                    for j in range(i+1, len(numbers)):
-                        if numbers[i] + numbers[j] == dice_choice:
-                            valid_sum = True
-                            break
-                    
-                    if valid_sum:
-                        break
-                
-                if valid_sum == False:
-                    print(f"{dice_choice} is not a valid sum of two numbers in the list {numbers}. Please, try again")
-                else:
-                    print(f"{dice_choice} is a valid sum of two numbers in the list {numbers}. The worksheet has been updated")
-                    break
+                dice_choice = [int(choice) for choice in dice_choice]
             except ValueError as e:
-                print(f"Your answer was not an integer number. {e}, Please try again.\n")
+                print(f"Your answer was not valid. {e}, Please try again.\n")
+                continue
+
+            valid_sum = False
+            for i in range(len(numbers)):
+                for j in range(i+1, len(numbers)):
+                    if numbers[i] + numbers[j] == dice_choice[0] and numbers[i] + numbers[j+1] == dice_choice[1]:
+                        valid_sum = True
+                        break
+                    elif numbers[i] + numbers[j] == dice_choice[1] and numbers[i] + numbers[j+1] == dice_choice[0]:
+                        valid_sum = True
+                        break
+
+                if valid_sum:
+                    break
+
+            if valid_sum == False:
+                print(f"{dice_choice} is not a valid combination of two numbers in the list {numbers}. Please, try again")
+            else:
+                print(f"{dice_choice} is a valid combination of two numbers in the list {numbers}. The worksheet has been updated")
+                break
         
         break
 
