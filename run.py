@@ -4,6 +4,7 @@
 
 import gspread
 import random
+import itertools
 from google.oauth2.service_account import Credentials 
 
 SCOPE = [
@@ -54,54 +55,63 @@ print(f'Great {P2}, you will be player Two!')
 P3 = input("And the remaining one is the oldest. What's your name, oh! old, wise person? ")
 
 def turn(player):
+    """
+    Defines all logical steps that take place on each turn
+    """
     while True:
         numbers = [random.randint(1, 6) for i in range(4)]
         print(f' {player}, your first roll is: {numbers}')
 
         while True:
-            dice_choice = input('From those four numbers, please choose one or two combinations of two dice summed (e.g. 1 3): ')
-            dice_choice = dice_choice.split()
-
-            if len(dice_choice) != 2:
-                print('Please enter exactly two numbers separated by a space.')
-                continue
-
             try:
-                dice_choice = [int(choice) for choice in dice_choice]
+                dice_choice = [int(x) for x in input('From those four numbers, please choose one or more combinations of two dice summed (separated by a space): ').split()]
             except ValueError as e:
-                print(f"Your answer was not valid. {e}, Please try again.\n")
+                print(f"invalid data: {e}, please try again.\n")
                 continue
 
-            valid_sum = False
-            for i in range(len(numbers)):
-                for j in range(i+1, len(numbers)):
-                    if numbers[i] + numbers[j] == dice_choice[0] and numbers[i] + numbers[j+1] == dice_choice[1]:
-                        valid_sum = True
-                        break
-                    elif numbers[i] + numbers[j] == dice_choice[1] and numbers[i] + numbers[j+1] == dice_choice[0]:
-                        valid_sum = True
-                        break
+            valid_combination = False
+            all_combinations = list(itertools.combinations(numbers, 2))
 
-                if valid_sum:
+            for choice in dice_choice:
+                if choice not in [sum(comb) for comb in all_combinations]:
+                    valid_combination = False
                     break
+                else:
+                    valid_combination = True
 
-            if valid_sum == False:
-                print(f"{dice_choice} is not a valid combination of two numbers in the list {numbers}. Please, try again")
+            if not valid_combination:
+                print(f"{dice_choice} is not a valid combination of two numbers in the list {numbers}. Please, try again.")
             else:
-                print(f"{dice_choice} is a valid combination of two numbers in the list {numbers}. The worksheet has been updated")
+                print(f"{dice_choice} is a valid combination of two numbers in the list {numbers}. Updating worksheet...\n")
                 break
-        
         break
 
 def update_worksheet(row, col, value):
     """
-    Receives a list of integers to be inserted into a worksheet 
-    Update the relevant worksheet with the data provided
+    Takes the result of each turn and updates the char sheet accordingly.
     """
     print(f"Updating {worksheet} worksheet...\n")
     worksheet_to_update = SHEET.worksheet('board')
     worksheet_to_update.append_cell(row, col, value)
     print(f"{worksheet} worksheet updated successfully.\n")
+
+def main():
+    """
+    Controls the flow of the game, calling each turn and each worksheet update
+    """
+    players_list = [P1, P2, P3]
+    player = players_list[0]
+    turn(player)
+    
+
+    continue_rolling = input("Do you want to continue rolling the dice? Y/N").upper()
+    if continue_rolling == Y:
+        turn(players_list[i])
+    elif continue_rolling == N:
+        turn(players_list[i+1])
+
+
+
 
 turn(P1)
 
