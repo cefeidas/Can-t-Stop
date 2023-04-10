@@ -57,20 +57,30 @@ def turn(player):
     while True:
         numbers = [random.randint(1, 6) for i in range(4)]
         print(f' {player}, your first roll is: {numbers}')
-        dice_choice = int(input('From those four numbers, please chose one or two combinations of two dice summed: '))
-        valid_sum = False
-        for i in range(len(numbers)):
-            for j in range(i+1, len(numbers)):
-                if numbers[i] + numbers[j] == dice_choice:
-                    valid_sum = True
+        
+        while True:
+            try:
+                dice_choice = int(input('From those four numbers, please choose one or two combinations of two dice summed: '))
+                valid_sum = False
+                
+                for i in range(len(numbers)):
+                    for j in range(i+1, len(numbers)):
+                        if numbers[i] + numbers[j] == dice_choice:
+                            valid_sum = True
+                            break
+                    
+                    if valid_sum:
+                        break
+                
+                if valid_sum == False:
+                    print(f"{dice_choice} is not a valid sum of two numbers in the list {numbers}. Please, try again")
+                else:
+                    print(f"{dice_choice} is a valid sum of two numbers in the list {numbers}. The worksheet has been updated")
                     break
-            if valid_sum:
-                break
-
-        if valid_sum:
-            print(f"{dice_choice} is a valid sum of two numbers in the list {numbers}. The worksheet has been updated")
-        else:
-           print(f"{dice_choice} is not a valid sum of two numbers in the list {numbers}. Please, try again")
+            except ValueError as e:
+                print(f"Your answer was not an integer number. {e}, Please try again.\n")
+        
+        break
 
 def update_worksheet(row, col, value):
     """
