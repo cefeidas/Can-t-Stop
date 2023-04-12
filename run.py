@@ -24,40 +24,38 @@ board = SHEET.worksheet('board')
 data = board.get_all_values()
 
 print(data)
-"""
 
-print('Welcome to Cannot stop, a push your luck game.')
 
-print('Objective:')
+def presenting_the_game():
+    print('Welcome to Cannot stop, a push your luck game.')
 
-print('The goal of Cannot Stop is to be the first player to reach the top of any three columns on the board.')
+    print('Objective:')
 
-print('Setup:')
+    print('The goal of Cannot Stop is to be the first player to reach the top of any three columns on the board.')
 
-print('The game board has eleven columns, numbered 2 through 12, and each player chooses three of these columns to be their targets.Each player starts with four markers, and these markers are placed at the bottom of the columns corresponding to their target numbers. Players take turns rolling four dice, and the youngest player goes first.')
+    print('Setup:')
 
-print('In this version of the game, the board is drawed on a worksheet, that will be updated as the game flows. The markers will be denoted by Pn, for n being the player number')
+    print('The game board has eleven columns, numbered 2 through 12, and each player chooses three of these columns to be their targets.Each player starts with four markers, and these markers are placed at the bottom of the columns corresponding to their target numbers. Players take turns rolling four dice, and the youngest player goes first.')
 
-print('Gameplay:')
+    print('In this version of the game, the board is drawed on a worksheet, that will be updated as the game flows. The markers will be denoted by Pn, for n being the player number')
 
-print('On each turn, they roll four dice and try to create one of their target numbers by combining two of the dice. For example, if a player has chosen the columns 4, 8, and 10 as their targets, they might try to create the number 8 by rolling a 3 and a 5. If the player is successful, they can move one of their markers up to the corresponding column on the board. If they fail to create a valid combination, their turn ends and they make no progress. The player can choose to continue rolling the remaining two dice to try and make progress on another target column, but they risk losing all progress on their turn if they fail to make a valid combination with any of the dice. A player can also choose to stop rolling after any roll and advance one of their markers one space in the corresponding column. This is a safe move, but it can be slower than trying to create a valid combination with the remaining dice. If a player reaches the top of a target column, they lock that column and can no longer roll for that target. They can still try to make progress on their remaining targets. If a player fails to make progress on any of their target columns during their turn, they lose all progress and their turn ends. Their opponent then takes their turn. The first player to reach the top of any three columns wins the game.')
+    print('Gameplay:')
 
-print("let's get started!")
+    print('On each turn, they roll four dice and try to create one of their target numbers by combining two of the dice. For example, if a player has chosen the columns 4, 8, and 10 as their targets, they might try to create the number 8 by rolling a 3 and a 5. If the player is successful, they can move one of their markers up to the corresponding column on the board. If they fail to create a valid combination, their turn ends and they make no progress. The player can choose to continue rolling the remaining two dice to try and make progress on another target column, but they risk losing all progress on their turn if they fail to make a valid combination with any of the dice. A player can also choose to stop rolling after any roll and advance one of their markers one space in the corresponding column. This is a safe move, but it can be slower than trying to create a valid combination with the remaining dice. If a player reaches the top of a target column, they lock that column and can no longer roll for that target. They can still try to make progress on their remaining targets. If a player fails to make progress on any of their target columns during their turn, they lose all progress and their turn ends. Their opponent then takes their turn. The first player to reach the top of any three columns wins the game.')
 
-P1 = input('Hi players, who is the youngest person in the room? ')
+    print("let's get started!")
 
-print(f'Great {P1}, you will be player one!')
-
-P2 = input('And who is the second youngest? ')
-
-print(f'Great {P2}, you will be player Two!')
-
-P3 = input("And the remaining one is the oldest. What's your name, oh! old, wise person? ")
+def naming_the_players():
+    P1 = input('Hi players, who is the youngest person in the room? ')
+    print(f'Great {P1}, you will be player one!')
+    P2 = input('And who is the second youngest? ')
+    print(f'Great {P2}, you will be player Two!')
+    P3 = input("And the remaining one is the oldest. What's your name, oh! old, wise person? ")
 
 def did_anybody_win():
-    """
+    
     Checks if the requirements of winning the game are met by any player.
-    """ 
+    
     win_or_not = input("Did anybody win? ")
     if win_or_not == 'Y':
         return True
@@ -65,9 +63,7 @@ def did_anybody_win():
         return False
 
 def turn(player):
-    """
-    Defines all logical steps that take place on each turn
-    """
+    
     while True:
         numbers = [random.randint(1, 6) for i in range(4)]
         print(f' {player}, your first roll is: {numbers}')
@@ -103,26 +99,34 @@ def turn(player):
     return result
 
 def check_data():
-    """
+    
     Check if the answers provided in turn() are correct. Update the list each character chooses in the early stages of the game
-    """
+    
     print('Checking data from last turn...')
 
-def update_worksheet():
-    """
+def turn():
+    k = [[7, 8], ['Y', 'Y']]
+    print(k)
+    return k
+
+def update_worksheet(row, col, value, player):
+    
     Takes the result of each turn and updates the char sheet accordingly.
-    """
-    print("Updating worksheet...")
-    """worksheet_to_update = SHEET.worksheet('board')
-    worksheet_to_update.append_cell(row, col, value)
-    print(f"{worksheet} worksheet updated successfully.\n")
-    """
+    
+    num = turn(player)
+    col = num[0][0]
+    value = "player"
+    worksheet_to_update = SHEET.worksheet('board')
+    worksheet_to_update.update_cell(row, col, value)
+    print("worksheet updated successfully.")
+
+
 
 
 def who_plays_now():
-    """
+    
     checks the lists and decide if any player has won
-    """
+    
     print('defining who plays now...')
 
 
@@ -130,10 +134,12 @@ def who_plays_now():
 
 
 def main():
-    """
+    
     Controls the flow of the game, calling each turn and each worksheet update
-    """
+    
     player = [P1]
+    presenting_the_game()
+    naming_the_players()
     while not did_anybody_win():
         turn(player)
         check_data()
@@ -142,6 +148,31 @@ def main():
     print('Congratulations!! Some person won the game!')
 
     
+# Call update_worksheet with the appropriate arguments
 
-main()
+turn()
+update_worksheet(row, col, value, player)
 
+
+
+def turn():
+    k = [[7, 8], ['Y', 'Y']]
+    print(k)
+    return k
+"""
+
+def turn():
+    k = [[7, 8], ['Y', 'Y']]
+    print(k)
+    return k
+
+def update_worksheet(row, col, value):
+    """
+    Takes the result of each turn and updates the char sheet accordingly.
+    """
+    worksheet_to_update = SHEET.worksheet('board')
+    worksheet_to_update.update_cell(row, col, value)
+    print("worksheet updated successfully.")
+
+k = turn()
+update_worksheet(5, k[0][0], 'Hello')
