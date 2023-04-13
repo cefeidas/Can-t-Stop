@@ -166,13 +166,23 @@ def turn():
     print(k)
     return k
 
-def update_worksheet(row, col, value):
+def update_worksheet(row, b, value):
     """
     Takes the result of each turn and updates the char sheet accordingly.
     """
-    worksheet_to_update = SHEET.worksheet('board')
-    worksheet_to_update.update_cell(row, col, value)
+    if len(b[0]) == 1:
+
+        col = b[0][0]
+        worksheet_to_update = SHEET.worksheet('board')
+        worksheet_to_update.update_cell(row, col, value)
+    elif len(b[0]) == 2:
+        col1 = b[0][0]
+        worksheet_to_update = SHEET.worksheet('board')
+        worksheet_to_update.update_cell(row, col1, value)
+        col2 = b[0][1]
+        worksheet_to_update = SHEET.worksheet('board')
+        worksheet_to_update.update_cell(row, col2, value)
     print("worksheet updated successfully.")
 
 k = turn()
-update_worksheet(5, k[0][0], 'Hello')
+update_worksheet(5, k, 'Hello')
