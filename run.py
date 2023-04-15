@@ -22,16 +22,13 @@ data = board.get_all_values()
 
 def presenting_the_game():
     print('Welcome to Cannot stop, a push your luck game.')
-
-    print('This is a simplified version of the game. If you are interested in the rules of the original game, please visit: ""')
-
-    print('The rules of this project can be found on the Readme File.')
-
-    print("let's get started!")
+    print('This is a simplified version of the game. If you are interested in the rules of the original game, please visit:')
+    print('The rules of this project can be found in the README file.')
+    print("Let's get started!")
 
 def naming_the_players():
-    P1 = input('Player one, please enter your name. ')
-    P2 = input('Player two, please enter your name. ')
+    P1 = input('Player one, please enter your name: ')
+    P2 = input('Player two, please enter your name: ')
     return [P1, P2]
 
 def first_turn(player):
@@ -59,10 +56,17 @@ def first_turn(player):
                 break
 
         target_number = {dice_choice: 1}
-        break
-    result = [target_number]
-    print(f'You chose the number {list(target_number.keys())[0]}. You advanced 1 cell.')
-    return result
+        result = [target_number]
+        print(f'You chose the number {list(target_number.keys())[0]}. You advanced 1 cell.')
+        return result
+
+def main():
+    presenting_the_game()
+    players = naming_the_players()
+    first_turn(players[0])
+    first_turn(players[1])
+
+main()
 
 
 """
@@ -98,6 +102,3 @@ def following_turns(player):
     print(result)
     return result
 """
-
-
-first_turn('Pepito')
