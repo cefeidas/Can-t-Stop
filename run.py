@@ -67,6 +67,14 @@ def update_sheet(coordinates, value):
     worksheet_to_update.update_cell(row, col, value)
     print("worksheet updated successfully.")
 
+def did_anybody_win():
+    winning_coordinates = [[2, 3], [3, 5], [4, 7], [5, 9], [6, 11], [7, 13], [8, 11], [9, 9], [10, 7], [11, 5], [12, 3]]
+    if coordinates in winning_coordinates:
+        print('Congratulations!! You won the Game!!')
+        return True
+    else:
+        return False
+
 def main():
     presenting_the_game()
     players = naming_the_players()
@@ -74,6 +82,8 @@ def main():
     update_sheet(coord_p1, players[0])
     coord_p2 = first_turn(players[1])
     update_sheet(coord_p2, players[1])
+
+
 
 main()
 
