@@ -56,15 +56,24 @@ def first_turn(player):
                 break
 
         target_number = {dice_choice: 1}
-        result = [target_number]
-        print(f'You chose the number {list(target_number.keys())[0]}. You advanced 1 cell.')
+        result = [list(target_number.keys())[0], 1]
+        print(f'You chose the number {result[0]}. You advanced 1 cell.')
         return result
+
+def update_sheet(coordinates, value):
+    row = coordinates[1] + 2
+    col = coordinates[0]
+    worksheet_to_update = SHEET.worksheet('board')
+    worksheet_to_update.update_cell(row, col, value)
+    print("worksheet updated successfully.")
 
 def main():
     presenting_the_game()
     players = naming_the_players()
-    first_turn(players[0])
-    first_turn(players[1])
+    coord_p1 = first_turn(players[0])
+    update_sheet(coord_p1, players[0])
+    coord_p2 = first_turn(players[1])
+    update_sheet(coord_p2, players[1])
 
 main()
 
