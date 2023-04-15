@@ -20,3 +20,49 @@ SHEET = GSPREAD_CLIENT.open('Can_t_Stop')
 board = SHEET.worksheet('board')
 data = board.get_all_values()
 
+def presenting_the_game():
+    print('Welcome to Cannot stop, a push your luck game.')
+
+    print('This is a simplified version of the game. If you are interested in the rules of the original game, please visit: ""')
+
+    print('The rules of this project can be found on the Readme File.')
+
+    print("let's get started!")
+
+def naming_the_players():
+    P1 = input('Player one, please enter your name. ')
+    P2 = input('Player two, please enter your name. ')
+    return [P1, P2]
+
+def turn(player):
+    while True:
+        numbers = [random.randint(1, 6) for i in range(4)]
+        print(f"{player}, your first roll is: {numbers}")
+        while True:
+            try:
+                dice_choice = int(input("From those four numbers, please choose one combination of two dice summed: "))
+            except ValueError as e:
+                print(f"Invalid data: {e}, please try again.\n")
+                continue
+
+            valid_combination = False
+            all_combinations = list(itertools.combinations(numbers, 2))
+            for comb in all_combinations:
+                if dice_choice == sum(comb):
+                    valid_combination = True
+                    break
+
+            if not valid_combination:
+                print(f"{dice_choice} is not a valid combination of two numbers in the list {numbers}. Please try again.")
+            else:
+                print(f"{dice_choice} is a valid combination of two numbers in the list {numbers}.")
+                break
+
+        target_number = dice_choice
+        break
+    result = [target_number]
+    print(result)
+    return result
+
+
+turn('Pepito')
