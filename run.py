@@ -5,7 +5,7 @@
 import gspread
 import random
 import itertools
-from google.oauth2.service_account import Credentials 
+from google.oauth2.service_account import Credentials
 
 SCOPE = [
     "https://www.googleapis.com/auth/spreadsheets",
@@ -23,20 +23,25 @@ data = board.get_all_values()
 
 def presenting_the_game():
     """
-    This function prints introductory sentences to help the players understand the game before it starts.
+    This function prints introductory sentences.
+    That helps the players understand the game before it starts.
     """
     print("Welcome to Can't stop, a push your luck game.")
-    print('This is a simplified version of the game. If you are interested in the original rules, please visit: "https://www.ultraboardgames.com/cant-stop/game-rules.php"')
+    print('This is a simplified version of the game.')
+    print('If you are interested in the original rules,')
+    print('visit: "https://www.ultraboardgames.com/cant-stop/game-rules.php')
     print('The rules for this project can be found in the README file.')
     print("Let's get started!")
 
+
 def naming_the_players():
     """
-    "This function asks and stores the names of two players." 
+    "This function asks and stores the names of two players."
     """
     P1 = input('Player one, please enter your name: ')
-    P2 = input('Player Two, please enter your name (choose a name that is different from Player One): ')
+    P2 = input('Player Two, please enter your name: ')
     return [P1, P2]
+
 
 def roll_dice():
     """
@@ -47,18 +52,22 @@ def roll_dice():
 
 def get_dice_combinations(numbers):
     """
-    This function returns all the possible combinations of two dice from the rolled numbers.
+    This function returns all the possible combinations
+    of two dice from the rolled numbers.
     """
     return list(itertools.combinations(numbers, 2))
 
 
 def get_valid_choice(target_number, dice_combinations):
     """
-    This function validates the player's choice of dice numbers and returns the chosen number if it's valid.
+    This function validates the player's choice of dice numbers
+    and returns the chosen number if it's valid.
     """
     while True:
         try:
-            dice_choice = int(input("From those four numbers, choose any two numbers and add them together, or enter your target number if you already have one: "))
+            dice_choice = int(input("""From those four numbers,
+            choose any two numbers and add them together, or enter your
+            target number if you already have one: """))
         except ValueError as e:
             print(f"Invalid data: {e}, please try again.\n")
             continue
@@ -69,12 +78,16 @@ def get_valid_choice(target_number, dice_combinations):
                 valid_combination = True
                 break
 
-        if target_number and target_number[0] not in [sum(comb) for comb in dice_combinations]:
+        if (target_number and
+           target_number[0] not in [sum(comb) for comb in dice_combinations]):
+
             print("It seems you ran out of luck")
-            print(f"You pushed your luck too hard and will go back to the starting square for this turn.")
+            print("You pushed your luck too hard!!")
+            print("You will go back to the starting square for this turn.")
             return None
         elif not valid_combination:
-            print(f"{dice_choice} is not the result of adding any two of the rolled dice. Please try again.")
+            print(f"{dice_choice} is not a valid combination.")
+            print("Please try again.")
             continue
         else:
             return dice_choice
@@ -82,10 +95,11 @@ def get_valid_choice(target_number, dice_combinations):
 
 def should_continue_rolling():
     """
-    This function asks the player if they want to continue rolling the dice and returns True if they do, False otherwise.
+    This function asks the player if they want to continue rolling the dice
+    and returns True if they do, False otherwise.
     """
     while True:
-        continue_rolling = input("Do you want to continue rolling the dice? Y/N: ").upper()
+        continue_rolling = input("Continue rolling the dice? Y/N: ").upper()
         if continue_rolling == 'Y':
             return True
         elif continue_rolling == 'N':
@@ -116,18 +130,22 @@ def turn(target_number, player):
             target_number[1] += 1
             scored = True
 
-        print(f'You chose the number {target_number[0]}. You moved up to the square {target_number[1]}.')
+        print(f'You chose the number {target_number[0]}')
+        print('You moved up to the square {target_number[1]}.')
 
         if not should_continue_rolling():
             print(f"The result is: {target_number}")
             return target_number, scored
 
+
 def update_sheet(coordinates, player, scored):
     """
-    This function updates the worksheet with the values returned from the turn() function. 
+    This function updates the worksheet.
+    It uses the values returned from the turn() function.
     """
     if not coordinates or not scored:
-        print(f"{player}, you did not score. The worksheet will not be updated.")
+        print(f"{player}, you did not score.")
+        print("The worksheet will not be updated.")
         return
 
     row = coordinates[1] + 2
@@ -138,26 +156,34 @@ def update_sheet(coordinates, player, scored):
     worksheet_to_update.update_cell(row, col, new_value)
     print("Worksheet updated successfully.")
 
+
 def did_anybody_win(player, coordinates):
     """
-    This function checks if any player has won the game using the values from the turn() function.
+    This function checks if a player has won the game.
+    It uses values from the turn() function.
     """
     if not coordinates:
         print("No one won this turn.")
         return False
 
-    winning_coordinates = [[2, 3], [3, 5], [4, 7], [5, 9], [6, 11], [7, 12], [8, 11], [9, 9], [10, 7], [11, 5], [12, 3]]
+    winning_coordinates = [[2, 3], [3, 5], [4, 7], [5, 9], [6, 11], [7, 12],
+                           [8, 11], [9, 9], [10, 7], [11, 5], [12, 3]]
     if coordinates in winning_coordinates:
         print(f'Congratulations {player}!! You won the Game!!')
-        print("If you feel like playing again, just remember to clear all the values from the worksheet before starting. In the meantime, be proud of your awesome victory; it's now on display for everyone to admire!")
+        print("If you feel like playing again,")
+        print("clear all the values from the worksheet before starting.")
+        print("Meanwhile, be proud of your awesome victory;")
+        print("it's now on display for everyone to admire!")
         return True
     else:
         print("Nobody won during this turn.")
         return False
 
+
 def main():
     """
-    This function serves as a control tower and calls all the other functions in the appropriate order.
+    This function acts as a control tower
+    by calling all the other functions in the right order.
     """
     presenting_the_game()
     players = naming_the_players()
