@@ -70,7 +70,7 @@ def get_valid_choice(target_number, dice_combinations):
 
         if target_number and target_number[0] not in [sum(comb) for comb in dice_combinations]:
             print("It seems you ran out of luck")
-            print(f"You pushed your luck too hard and will go back to the starting square for this turn: ({target_number})")
+            print(f"You pushed your luck too hard and will go back to the starting square for this turn.")
             return None
         elif not valid_combination:
             print(f"{dice_choice} is not the result of adding any two of the rolled dice. Please try again.")
@@ -115,7 +115,7 @@ def turn(target_number, player):
             target_number[1] += 1
             scored = True
 
-        print(f'You chose the number {target_number[0]}. You moved up to the row {target_number[1]}.')
+        print(f'You chose the number {target_number[0]}. You moved up to the square {target_number[1]}.')
 
         if not should_continue_rolling():
             print(f"The result is: {target_number}")
