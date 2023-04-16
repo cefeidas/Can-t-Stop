@@ -1,10 +1,19 @@
-# Your code goes here.
+"""
+This script implements a simplified version of the board game "Can't Stop"
+for two players. The game is played using a Google Sheets worksheet as the
+game board. The players take turns rolling dice, choosing combinations, and
+moving their pieces on the board. The first player to reach a winning
+coordinate is declared the winner.
+"""
+
+# Your code goes here
 # You can delete these comments, but do not change the name of this file
 # Write your code to expect a terminal of 80 characters wide and 24 rows high
 
-import gspread
 import random
 import itertools
+import gspread
+
 from google.oauth2.service_account import Credentials
 
 SCOPE = [
@@ -38,9 +47,9 @@ def naming_the_players():
     """
     "This function asks and stores the names of two players."
     """
-    P1 = input('Player one, please enter your name: ')
-    P2 = input('Player Two, please enter your name: ')
-    return [P1, P2]
+    player_one = input('Player one, please enter your name: ')
+    player_two = input('Player Two, please enter your name: ')
+    return [player_one, player_two]
 
 
 def roll_dice():
@@ -68,8 +77,8 @@ def get_valid_choice(target_number, dice_combinations):
             dice_choice = int(input("""From those four numbers,
             choose any two numbers and add them together, or enter your
             target number if you already have one: """))
-        except ValueError as e:
-            print(f"Invalid data: {e}, please try again.\n")
+        except ValueError as error:
+            print(f"Invalid data: {error}, please try again.\n")
             continue
 
         valid_combination = False
@@ -187,7 +196,7 @@ def main():
     """
     presenting_the_game()
     players = naming_the_players()
-    target_numbers = [[], []]  # Initialize target numbers for both players
+    target_numbers = [[], []]
 
     while True:
         target_number, scored = turn(target_numbers[0], players[0])
