@@ -21,14 +21,14 @@ board = SHEET.worksheet('board')
 data = board.get_all_values()
 
 def presenting_the_game():
-    print('Welcome to Cannot stop, a push your luck game.')
-    print('This is a simplified version of the game. If you are interested in the rules of the original game, please visit:')
-    print('The rules of this project can be found in the README file.')
+    print("Welcome to Can't stop, a push your luck game.")
+    print('This is a simplified version of the game. If you are interestedin the original rules, please visit: "https://www.ultraboardgames.com/cant-stop/game-rules.php"')
+    print('The rules for this project can be found in the README file.')
     print("Let's get started!")
 
 def naming_the_players():
     P1 = input('Player one, please enter your name: ')
-    P2 = input('Player two, please enter your name: ')
+    P2 = input('Player Two, please enter your name (choose a name that is different from Player One): ')
     return [P1, P2]
 
 def turn(target_number, player):
@@ -37,10 +37,10 @@ def turn(target_number, player):
 
     while True:
         numbers = [random.randint(1, 6) for i in range(4)]
-        print(f"{player}, your first roll is: {numbers}")
+        print(f"{player}, you rolled the following numbers: {numbers}")
         while True:
             try:
-                dice_choice = int(input("From those four numbers, please choose one combination of two dice summed: "))
+                dice_choice = int(input("From those four numbers, choose any two numbers and add them together, or enter your target number if you already have one: "))
             except ValueError as e:
                 print(f"Invalid data: {e}, please try again.\n")
                 continue
@@ -54,10 +54,10 @@ def turn(target_number, player):
 
             if target_number and target_number[0] not in [sum(comb) for comb in all_combinations]:
                 print("It seems you ran out of luck")
-                print(f"Returning the original value of target_number: {original_target_number}")
+                print(f"You pushed your luck too hard and will go back to the starting square for this turn: ({original_target_number})")
                 return original_target_number, False
             elif not valid_combination:
-                print(f"{dice_choice} is not a valid combination of two numbers in the list {numbers}. Please try again.")
+                print(f"{dice_choice} is not the result of adding any two of the rolled dice({numbers}). Please try again.")
                 continue
             elif not target_number:
                 target_number = [dice_choice, 1]
@@ -72,14 +72,14 @@ def turn(target_number, player):
                 continue
 
         result = target_number
-        print(f'You chose the number {result[0]}. You advanced {result[1]} cell(s).')
+        print(f'You chose the number {result[0]}. You moved up to the row {result[1]}.')
 
         while True:
             continue_rolling = input("Do you want to continue rolling the dice? Y/N: ").upper()
             if continue_rolling == 'Y':
                 break
             elif continue_rolling == 'N':
-                print(f"Returning the result: {result}")
+                print(f"The result is: {result}")
                 return result, scored
             else:
                 print("Invalid input. Please enter Y or N.")
@@ -95,11 +95,11 @@ def update_sheet(coordinates, player, scored):
     current_value = worksheet_to_update.cell(row, col).value
     new_value = current_value + ", " + player if current_value else player
     worksheet_to_update.update_cell(row, col, new_value)
-    print("worksheet updated successfully.")
+    print("Worksheet updated successfully.")
 
 def did_anybody_win(player, coordinates):
     if not coordinates:
-        print("Nobody won during this turn.")
+        print("No one won this turn.")
         return False
 
     winning_coordinates = [[2, 3], [3, 5], [4, 7], [5, 9], [6, 11], [7, 12], [8, 11], [9, 9], [10, 7], [11, 5], [12, 3]]
