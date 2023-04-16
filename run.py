@@ -109,15 +109,17 @@ def did_anybody_win(player, coordinates):
 def main():
     presenting_the_game()
     players = naming_the_players()
+    target_numbers = [[], []]  # Initialize target numbers for both players
+
     while True:
-        coord_p1 = turn([], players[0])
-        update_sheet(coord_p1, players[0])
-        if did_anybody_win(players[0], coord_p1):
+        target_numbers[0] = turn(target_numbers[0], players[0])
+        update_sheet(target_numbers[0], players[0])
+        if did_anybody_win(players[0], target_numbers[0]):
             break
 
-        coord_p2 = turn([], players[1])
-        update_sheet(coord_p2, players[1])
-        if did_anybody_win(players[1], coord_p2):
+        target_numbers[1] = turn(target_numbers[1], players[1])
+        update_sheet(target_numbers[1], players[1])
+        if did_anybody_win(players[1], target_numbers[1]):
             break
 
 
