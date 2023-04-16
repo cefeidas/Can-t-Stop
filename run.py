@@ -82,7 +82,7 @@ def turn(target_number, player):
 
 def update_sheet(coordinates, player):
     if not coordinates:
-        print(f'{player},. You did not score. The worksheet will not be updated.')
+        print(f'{player}, you did not score. The worksheet will not be updated.')
         return
 
     row = coordinates[1] + 2
@@ -94,25 +94,31 @@ def update_sheet(coordinates, player):
     print("worksheet updated successfully.")
 
 def did_anybody_win(player, coordinates):
+    if not coordinates:
+        print("Nobody won during this turn.")
+        return False
+
     winning_coordinates = [[2, 3], [3, 5], [4, 7], [5, 9], [6, 11], [7, 13], [8, 11], [9, 9], [10, 7], [11, 5], [12, 3]]
     if coordinates in winning_coordinates:
         print(f'Congratulations {player}!! You won the Game!!')
         return True
     else:
+        print("Nobody won during this turn.")
         return False
 
 def main():
     presenting_the_game()
     players = naming_the_players()
-    coord_p1 = turn([], players[0])
-    update_sheet(coord_p1, players[0])
-    coord_p2 = turn([], players[1])
-    update_sheet(coord_p2, players[1])
-    while not did_anybody_win(coord_p1) and not did_anybody_win(coord_p2):
-        coord_p1 = turn(coord_p1, players[0])
+    while True:
+        coord_p1 = turn([], players[0])
         update_sheet(coord_p1, players[0])
-        coord_p2 = turn(coord_p2, players[1])
+        if did_anybody_win(players[0], coord_p1):
+            break
+
+        coord_p2 = turn([], players[1])
         update_sheet(coord_p2, players[1])
+        if did_anybody_win(players[1], coord_p2):
+            break
 
 
 main()
