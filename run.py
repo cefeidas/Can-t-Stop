@@ -140,7 +140,7 @@ def turn(target_number, player):
             scored = True
 
         print(f'You chose the number {target_number[0]}')
-        print('You moved up to the square {target_number[1]}.')
+        print(f'You moved up to the square {target_number[1]}.')
 
         if not should_continue_rolling():
             print(f"The result is: {target_number}")
