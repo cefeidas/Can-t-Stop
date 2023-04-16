@@ -103,9 +103,10 @@ main()
 
 
 def first_turn(player):
+    target_number = {}
     while True:
         numbers = [random.randint(1, 6) for i in range(4)]
-        print(f"{player}, your roll is: {numbers}")
+        print(f"{player}, your first roll is: {numbers}")
         while True:
             try:
                 dice_choice = int(input("From those four numbers, please choose one combination of two dice summed: "))
@@ -126,9 +127,16 @@ def first_turn(player):
                 print(f"{dice_choice} is a valid combination of two numbers in the list {numbers}.")
                 break
 
-        target_number = {dice_choice: 1}
-        result = [list(target_number.keys())[0], 1]
-        print(f'You chose the number {result[0]}. You advanced 1 cell.')
+        if not target_number:
+            target_number[dice_choice] = 1
+        elif dice_choice == list(target_number.keys())[0]:
+            target_number[dice_choice] += 1
+        else:
+            print("This is not your target number.")
+            continue
+
+        result = [list(target_number.keys())[0], target_number[dice_choice]]
+        print(f'You chose the number {result[0]}. You advanced {result[1]} cell(s).')
 
         while True:
             continue_rolling = input("Do you want to continue rolling the dice? Y/N: ").upper()
