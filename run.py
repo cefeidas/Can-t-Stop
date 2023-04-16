@@ -20,7 +20,7 @@ SHEET = GSPREAD_CLIENT.open('Can_t_Stop')
 board = SHEET.worksheet('board')
 data = board.get_all_values()
 
-"""
+
 def presenting_the_game():
     print('Welcome to Cannot stop, a push your luck game.')
     print('This is a simplified version of the game. If you are interested in the rules of the original game, please visit:')
@@ -32,7 +32,8 @@ def naming_the_players():
     P2 = input('Player two, please enter your name: ')
     return [P1, P2]
 
-def first_turn(player):
+def turn(target_number, player):
+    original_target_number = target_number.copy()
     while True:
         numbers = [random.randint(1, 6) for i in range(4)]
         print(f"{player}, your first roll is: {numbers}")
@@ -50,16 +51,35 @@ def first_turn(player):
                     valid_combination = True
                     break
 
-            if not valid_combination:
+            if target_number and target_number[0] not in [sum(comb) for comb in all_combinations]:
+                print("It seems you ran out of luck")
+                print(f"Returning the original value of target_number: {original_target_number}")
+                return original_target_number
+            elif not valid_combination:
                 print(f"{dice_choice} is not a valid combination of two numbers in the list {numbers}. Please try again.")
-            else:
-                print(f"{dice_choice} is a valid combination of two numbers in the list {numbers}.")
+                continue
+            elif not target_number:
+                target_number = [dice_choice, 1]
                 break
+            elif dice_choice == target_number[0]:
+                target_number[1] += 1
+                break
+            else:
+                print("This is not your target number.")
+                continue
 
-        target_number = {dice_choice: 1}
-        result = [list(target_number.keys())[0], 1]
-        print(f'You chose the number {result[0]}. You advanced 1 cell.')
-        return result
+        result = target_number
+        print(f'You chose the number {result[0]}. You advanced {result[1]} cell(s).')
+
+        while True:
+            continue_rolling = input("Do you want to continue rolling the dice? Y/N: ").upper()
+            if continue_rolling == 'Y':
+                break
+            elif continue_rolling == 'N':
+                print(f"Returning the result: {result}")
+                return result
+            else:
+                print("Invalid input. Please enter Y or N.")
 
 def update_sheet(coordinates, value):
     row = coordinates[1] + 2
@@ -81,15 +101,14 @@ def did_anybody_win(coordinates):
 def main():
     presenting_the_game()
     players = naming_the_players()
-    coord_p1 = first_turn(players[0])
+    coord_p1 = turn([], players[0])
     update_sheet(coord_p1, players[0])
-    coord_p2 = first_turn(players[1])
+    coord_p2 = turn([], players[1])
     update_sheet(coord_p2, players[1])
-    while not did_anybody_win():
-        coord_p1 = first_turn(players[0])
-        following_turn(players[0], coord_p1)
+    while not did_anybody_win(coord_p1) and not did_anybody_win(coord_p2):
+        coord_p1 = turn(coord_p1, players[0])
         update_sheet(coord_p1, players[0])
-        coord_p2 = following_turn(players[1])
+        coord_p2 = turn(coord_p2, players[1])
         update_sheet(coord_p2, players[1])
 
 
@@ -98,53 +117,3 @@ def main():
 
 
 main()
-
-"""
-
-
-def first_turn(player):
-    target_number = {}
-    while True:
-        numbers = [random.randint(1, 6) for i in range(4)]
-        print(f"{player}, your first roll is: {numbers}")
-        while True:
-            try:
-                dice_choice = int(input("From those four numbers, please choose one combination of two dice summed: "))
-            except ValueError as e:
-                print(f"Invalid data: {e}, please try again.\n")
-                continue
-
-            valid_combination = False
-            all_combinations = list(itertools.combinations(numbers, 2))
-            for comb in all_combinations:
-                if dice_choice == sum(comb):
-                    valid_combination = True
-                    break
-
-            if not valid_combination:
-                print(f"{dice_choice} is not a valid combination of two numbers in the list {numbers}. Please try again.")
-            else:
-                print(f"{dice_choice} is a valid combination of two numbers in the list {numbers}.")
-                break
-
-        if not target_number:
-            target_number[dice_choice] = 1
-        elif dice_choice == list(target_number.keys())[0]:
-            target_number[dice_choice] += 1
-        else:
-            print("This is not your target number.")
-            continue
-
-        result = [list(target_number.keys())[0], target_number[dice_choice]]
-        print(f'You chose the number {result[0]}. You advanced {result[1]} cell(s).')
-
-        while True:
-            continue_rolling = input("Do you want to continue rolling the dice? Y/N: ").upper()
-            if continue_rolling == 'Y':
-                break
-            elif continue_rolling == 'N':
-                return result
-            else:
-                print("Invalid input. Please enter Y or N.")
-
-first_turn('Dani')
