@@ -20,6 +20,7 @@ SHEET = GSPREAD_CLIENT.open('Can_t_Stop')
 board = SHEET.worksheet('board')
 data = board.get_all_values()
 
+
 def presenting_the_game():
     """
     This function prints introductory sentences to help the players understand the game before it starts.
