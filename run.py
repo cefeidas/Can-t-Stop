@@ -64,7 +64,9 @@ def update_sheet(coordinates, value):
     row = coordinates[1] + 2
     col = coordinates[0]
     worksheet_to_update = SHEET.worksheet('board')
-    worksheet_to_update.update_cell(row, col, value)
+    current_value = worksheet_to_update.cell(row, col).value
+    new_value = current_value + ", " + value if current_value else value
+    worksheet_to_update.update_cell(row, col, new_value)
     print("worksheet updated successfully.")
 
 def did_anybody_win():
@@ -82,6 +84,9 @@ def main():
     update_sheet(coord_p1, players[0])
     coord_p2 = first_turn(players[1])
     update_sheet(coord_p2, players[1])
+    """while not did_anybody_win():"""
+
+
 
 
 
