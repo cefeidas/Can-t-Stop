@@ -33,7 +33,7 @@ def naming_the_players():
 
 def turn(target_number, player):
     original_target_number = target_number.copy()
-    scored = False  # Initialize a flag to indicate if the player scored
+    scored = False
 
     while True:
         numbers = [random.randint(1, 6) for i in range(4)]
@@ -55,37 +55,34 @@ def turn(target_number, player):
             if target_number and target_number[0] not in [sum(comb) for comb in all_combinations]:
                 print("It seems you ran out of luck")
                 print(f"Returning the original value of target_number: {original_target_number}")
-                break
+                return original_target_number, False
             elif not valid_combination:
                 print(f"{dice_choice} is not a valid combination of two numbers in the list {numbers}. Please try again.")
                 continue
             elif not target_number:
                 target_number = [dice_choice, 1]
-                scored = True  # Set the flag to True as the player scored
+                scored = True
                 break
             elif dice_choice == target_number[0]:
                 target_number[1] += 1
-                scored = True  # Set the flag to True as the player scored
+                scored = True
                 break
             else:
                 print("This is not your target number.")
                 continue
 
-        if not scored:
-            return (original_target_number, False)  # Return the original target number and the flag
-        else:
-            result = target_number
-            print(f'You chose the number {result[0]}. You advanced {result[1]} cell(s).')
+        result = target_number
+        print(f'You chose the number {result[0]}. You advanced {result[1]} cell(s).')
 
-            while True:
-                continue_rolling = input("Do you want to continue rolling the dice? Y/N: ").upper()
-                if continue_rolling == 'Y':
-                    break
-                elif continue_rolling == 'N':
-                    print(f"Returning the result: {result}")
-                    return (result, scored)
-                else:
-                    print("Invalid input. Please enter Y or N.")
+        while True:
+            continue_rolling = input("Do you want to continue rolling the dice? Y/N: ").upper()
+            if continue_rolling == 'Y':
+                break
+            elif continue_rolling == 'N':
+                print(f"Returning the result: {result}")
+                return result, scored
+            else:
+                print("Invalid input. Please enter Y or N.")
 
 def update_sheet(coordinates, player, scored):
     if not coordinates or not scored:
@@ -105,7 +102,7 @@ def did_anybody_win(player, coordinates):
         print("Nobody won during this turn.")
         return False
 
-    winning_coordinates = [[2, 3], [3, 5], [4, 7], [5, 9], [6, 11], [7, 13], [8, 11], [9, 9], [10, 7], [11, 5], [12, 3]]
+    winning_coordinates = [[2, 3], [3, 5], [4, 7], [5, 9], [6, 11], [7, 12], [8, 11], [9, 9], [10, 7], [11, 5], [12, 3]]
     if coordinates in winning_coordinates:
         print(f'Congratulations {player}!! You won the Game!!')
         return True
