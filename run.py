@@ -35,11 +35,11 @@ def presenting_the_game():
     This function prints introductory sentences.
     That helps the players understand the game before it starts.
     """
-    print("Welcome to Can't stop, a push your luck game.")
-    print('This is a simplified version of the game.')
-    print('If you are interested in the original rules,')
-    print('visit: "https://www.ultraboardgames.com/cant-stop/game-rules.php')
-    print('The rules for this project can be found in the README file.')
+    print("Welcome to Can't stop, a push your luck game.\n")
+    print('This is a simplified version of the game.\n')
+    print('If you are interested in the original rules,\n')
+    print('visit: "https://www.ultraboardgames.com/cant-stop/game-rules.php\n')
+    print('The rules for this project can be found in the README file.\n')
     print("Let's get started!")
 
 
@@ -47,8 +47,8 @@ def naming_the_players():
     """
     "This function asks and stores the names of two players."
     """
-    player_one = input('Player one, please enter your name: ')
-    player_two = input('Player Two, please enter your name: ')
+    player_one = input('Player one, please enter your name: \n')
+    player_two = input('Player Two, please enter your name: \n')
     return [player_one, player_two]
 
 
@@ -76,7 +76,7 @@ def get_valid_choice(target_number, dice_combinations):
         try:
             dice_choice = int(input("""From those four numbers,
             choose any two numbers and add them together, or enter your
-            target number if you already have one: """))
+            target number if you already have one: \n"""))
         except ValueError as error:
             print(f"Invalid data: {error}, please try again.\n")
             continue
@@ -90,13 +90,13 @@ def get_valid_choice(target_number, dice_combinations):
         if (target_number and
            target_number[0] not in [sum(comb) for comb in dice_combinations]):
 
-            print("It seems you ran out of luck")
-            print("You pushed your luck too hard!!")
-            print("You will go back to the starting square for this turn.")
+            print("It seems you ran out of luck\n")
+            print("You pushed your luck too hard!!\n")
+            print("You will go back to the starting square for this turn.\n")
             return None
         elif not valid_combination:
-            print(f"{dice_choice} is not a valid combination.")
-            print("Please try again.")
+            print(f"{dice_choice} is not a valid combination.\n")
+            print("Please try again.\n")
             continue
         else:
             return dice_choice
@@ -108,13 +108,13 @@ def should_continue_rolling():
     and returns True if they do, False otherwise.
     """
     while True:
-        continue_rolling = input("Continue rolling the dice? Y/N: ").upper()
+        continue_rolling = input("Continue rolling the dice? Y/N: \n").upper()
         if continue_rolling == 'Y':
             return True
         elif continue_rolling == 'N':
             return False
         else:
-            print("Invalid input. Please enter Y or N.")
+            print("Invalid input. Please enter Y or N. \n")
 
 
 def turn(target_number, player):
@@ -126,7 +126,7 @@ def turn(target_number, player):
 
     while True:
         numbers = roll_dice()
-        print(f"{player}, you rolled the following numbers: {numbers}")
+        print(f"{player}, you rolled the following numbers: {numbers}\n")
         dice_combinations = get_dice_combinations(numbers)
         dice_choice = get_valid_choice(target_number, dice_combinations)
 
@@ -139,11 +139,11 @@ def turn(target_number, player):
             target_number[1] += 1
             scored = True
 
-        print(f'You chose the number {target_number[0]}')
-        print(f'You moved up to the square {target_number[1]}.')
+        print(f'You chose the number {target_number[0]}\n')
+        print(f'You moved up to the square {target_number[1]}.\n')
 
         if not should_continue_rolling():
-            print(f"The result is: {target_number}")
+            print(f"The result is: {target_number}\n")
             return target_number, scored
 
 
@@ -153,8 +153,8 @@ def update_sheet(coordinates, player, scored):
     It uses the values returned from the turn() function.
     """
     if not coordinates or not scored:
-        print(f"{player}, you did not score.")
-        print("The worksheet will not be updated.")
+        print(f"{player}, you did not score.\n")
+        print("The worksheet will not be updated.\n")
         return
 
     row = coordinates[1] + 2
@@ -163,7 +163,7 @@ def update_sheet(coordinates, player, scored):
     current_value = worksheet_to_update.cell(row, col).value
     new_value = current_value + ", " + player if current_value else player
     worksheet_to_update.update_cell(row, col, new_value)
-    print("Worksheet updated successfully.")
+    print("Worksheet updated successfully.\n")
 
 
 def did_anybody_win(player, coordinates):
@@ -172,20 +172,20 @@ def did_anybody_win(player, coordinates):
     It uses values from the turn() function.
     """
     if not coordinates:
-        print("No one won this turn.")
+        print("No one won this turn.\n")
         return False
 
     winning_coordinates = [[2, 3], [3, 5], [4, 7], [5, 9], [6, 11], [7, 12],
                            [8, 11], [9, 9], [10, 7], [11, 5], [12, 3]]
     if coordinates in winning_coordinates:
-        print(f'Congratulations {player}!! You won the Game!!')
-        print("If you feel like playing again,")
-        print("clear all the values from the worksheet before starting.")
-        print("Meanwhile, be proud of your awesome victory;")
-        print("it's now on display for everyone to admire!")
+        print(f'Congratulations {player}!! You won the Game!!\n')
+        print("If you feel like playing again,\n")
+        print("clear all the values from the worksheet before starting.\n")
+        print("Meanwhile, be proud of your awesome victory;\n")
+        print("it's now on display for everyone to admire!\n")
         return True
     else:
-        print("Nobody won during this turn.")
+        print("Nobody won during this turn.\n")
         return False
 
 
