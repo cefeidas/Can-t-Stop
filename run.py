@@ -89,6 +89,10 @@ def get_dice_combinations(numbers):
 
 
 def get_valid_choice(target_number, dice_combinations, player):
+    """
+    This function validates the player's choice of dice numbers
+    and returns the chosen number if it's valid.
+    """
     valid_sums = [sum(comb) for comb in dice_combinations]
     if target_number:
         if target_number[0] in valid_sums:
@@ -184,15 +188,17 @@ def did_anybody_win(player, coordinates):
         print("No one won this turn.\n")
         return False
 
-    winning_coordinates = [[2, 3], [3, 5], [4, 7], [5, 9], [6, 11], [7, 12],
-                           [8, 11], [9, 9], [10, 7], [11, 5], [12, 3]]
-    if coordinates in winning_coordinates:
-        print(f'Congratulations {player}!! You won the Game!!\n')
-        print("If you feel like playing again,\n")
-        print("clear all the values from the worksheet before starting.\n")
-        print("Meanwhile, be proud of your awesome victory;\n")
-        print("it's now on display for everyone to admire!\n")
-        return True
+    winning_coordinates = {2: 3, 3: 5, 4: 7, 5: 9, 6: 11, 7: 12,
+                           8: 11, 9: 9, 10: 7, 11: 5, 12: 3}
+
+    if coordinates[0] in winning_coordinates:
+        if coordinates[1] >= winning_coordinates[coordinates[0]]:
+            print(f'Congratulations {player}!! You won the Game!!\n')
+            print("If you feel like playing again,\n")
+            print("clear all the values from the worksheet before starting.\n")
+            print("Meanwhile, be proud of your awesome victory;\n")
+            print("it's now on display for everyone to admire!\n")
+            return True
     else:
         print("Nobody won during this turn.\n")
         return False
