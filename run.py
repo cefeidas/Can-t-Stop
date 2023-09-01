@@ -39,7 +39,7 @@ def clear_board():
     worksheet_to_clear = SHEET.worksheet('board')
 
     # Fetch the cell range
-    cell_list = worksheet_to_clear.range('B3:L14')
+    cell_list = worksheet_to_clear.range('B3:L30')
 
     # Update each cell in the fetched range
     for cell in cell_list:
