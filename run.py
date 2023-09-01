@@ -29,6 +29,7 @@ SHEET = GSPREAD_CLIENT.open('Can_t_Stop')
 board = SHEET.worksheet('board')
 data = board.get_all_values()
 
+
 def clear_board():
     """
     Clears the board on the Google Sheet to prepare for a new game.
@@ -43,11 +44,12 @@ def clear_board():
     # Update each cell in the fetched range
     for cell in cell_list:
         cell.value = ''
-    
+
     # Update the changed cells in batch
     worksheet_to_clear.update_cells(cell_list)
 
     print("Board cleared. All set for a new game!")
+
 
 def presenting_the_game():
     """
@@ -86,39 +88,27 @@ def get_dice_combinations(numbers):
     return list(itertools.combinations(numbers, 2))
 
 
-def get_valid_choice(target_number, dice_combinations):
-    """
-    This function validates the player's choice of dice numbers
-    and returns the chosen number if it's valid.
-    """
-    while True:
-        try:
-            dice_choice = int(input("""From those four numbers,
-            choose any two numbers and add them together, or enter your
-            target number if you already have one: \n"""))
-        except ValueError as error:
-            print(f"Invalid data: {error}, please try again.\n")
-            continue
-
-        valid_combination = False
-        for comb in dice_combinations:
-            if dice_choice == sum(comb):
-                valid_combination = True
-                break
-
-        if (target_number and
-           target_number[0] not in [sum(comb) for comb in dice_combinations]):
-
-            print("It seems you ran out of luck\n")
-            print("You pushed your luck too hard!!\n")
-            print("You will go back to the starting square for this turn.\n")
-            return None
-        elif not valid_combination:
-            print(f"{dice_choice} is not a valid combination.\n")
-            print("Please try again.\n")
-            continue
+def get_valid_choice(target_number, dice_combinations, player):
+    valid_sums = [sum(comb) for comb in dice_combinations]
+    if target_number:
+        if target_number[0] in valid_sums:
+            print(f"Great {player}, your target number {target_number[0]} is valid for this round.")
+            return target_number[0]
         else:
-            return dice_choice
+            print(f"Sorry {player}, your target number {target_number[0]} is not valid this round.")
+            return None
+    else:
+        while True:
+            try:
+                dice_choice = int(input(f"""{player}, choose any two numbers and add them together.
+                This will be your target number for the rest of the game: \n"""))
+                if dice_choice in valid_sums:
+                    return dice_choice
+                else:
+                    print(f"{dice_choice} is not a valid sum. Please try again.\n")
+            except ValueError as error:
+                print(f"Invalid data: {error}, please try again.\n")
+                continue
 
 
 def should_continue_rolling():
