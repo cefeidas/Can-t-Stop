@@ -66,10 +66,28 @@ def presenting_the_game():
 
 def naming_the_players():
     """
-    "This function asks and stores the names of two players."
+    This function asks and stores the names of two players.
     """
-    player_one = input('Player one, please enter your name: \n')
-    player_two = input('Player Two, please enter your name: \n')
+    # Loop to keep asking for Player One's name until valid input is received
+    while True:
+        player_one = input('Player one, please enter your name: \n')
+        if len(player_one) > 20:
+            print("Error: Name exceeds 20 characters")
+        elif len(player_one.strip()) == 0:
+            print("Error: Blank space is not a valid name.")
+        else:
+            break  # Exit loop if input is valid
+
+    # Loop to keep asking for Player Two's name until valid input is received
+    while True:
+        player_two = input('Player Two, please enter your name: \n')
+        if len(player_two) > 20:
+            print("Error: Name exceeds 20 characters")
+        elif len(player_two.strip()) == 0:
+            print("Error: Blank space is not a valid name.")
+        else:
+            break  # Exit loop if input is valid
+
     return [player_one, player_two]
 
 
@@ -96,22 +114,24 @@ def get_valid_choice(target_number, dice_combinations, player):
     valid_sums = [sum(comb) for comb in dice_combinations]
     if target_number:
         if target_number[0] in valid_sums:
-            print(f"Great {player}, your target number {target_number[0]} is valid for this round.")
+            print(f"Great {player}, your target {target_number[0]} is valid.")
             return target_number[0]
         else:
-            print(f"Sorry {player}, your target number {target_number[0]} is not valid this round.")
+            print(f"Sorry {player}, target {target_number[0]} is invalid.")
             return None
     else:
         while True:
             try:
-                dice_choice = int(input(f"""{player}, choose any two numbers and add them together.
-                This will be your target number for the rest of the game: \n"""))
+                prompt = (f"{player}, choose any two numbers and "
+                          "add them. This is your target: \n")
+                dice_choice = int(input(prompt))
+
                 if dice_choice in valid_sums:
                     return dice_choice
                 else:
-                    print(f"{dice_choice} is not a valid sum. Please try again.\n")
+                    print(f"{dice_choice} is invalid. Try again.\n")
             except ValueError as error:
-                print(f"Invalid data: {error}, please try again.\n")
+                print(f"Invalid data: {error}. Try again.\n")
                 continue
 
 
@@ -140,8 +160,12 @@ def turn(target_number, player):
     while True:
         numbers = roll_dice()
         print(f"{player}, you rolled the following numbers: {numbers}\n")
+
         dice_combinations = get_dice_combinations(numbers)
-        dice_choice = get_valid_choice(target_number, dice_combinations)
+
+        # Breaking the long line into multiple lines by using variables
+        args = (target_number, dice_combinations, player)
+        dice_choice = get_valid_choice(*args)
 
         if dice_choice is None:
             return original_target_number, False
@@ -152,7 +176,7 @@ def turn(target_number, player):
             target_number[1] += 1
             scored = True
 
-        print(f'You chose the number {target_number[0]}\n')
+        print(f'{player}, you chose the number {target_number[0]}\n')
         print(f'You moved up to the square {target_number[1]}.\n')
 
         if not should_continue_rolling():
@@ -195,7 +219,7 @@ def did_anybody_win(player, coordinates):
         if coordinates[1] >= winning_coordinates[coordinates[0]]:
             print(f'Congratulations {player}!! You won the Game!!\n')
             print("If you feel like playing again,\n")
-            print("clear all the values from the worksheet before starting.\n")
+            print("all values wil be cleared whe you start a new game.\n")
             print("Meanwhile, be proud of your awesome victory;\n")
             print("it's now on display for everyone to admire!\n")
             return True
