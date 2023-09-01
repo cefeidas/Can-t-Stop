@@ -29,6 +29,25 @@ SHEET = GSPREAD_CLIENT.open('Can_t_Stop')
 board = SHEET.worksheet('board')
 data = board.get_all_values()
 
+def clear_board():
+    """
+    Clears the board on the Google Sheet to prepare for a new game.
+    The cells in the range from B3 to L14 are set to an empty string.
+    """
+    # Access the Google Sheet
+    worksheet_to_clear = SHEET.worksheet('board')
+
+    # Fetch the cell range
+    cell_list = worksheet_to_clear.range('B3:L14')
+
+    # Update each cell in the fetched range
+    for cell in cell_list:
+        cell.value = ''
+    
+    # Update the changed cells in batch
+    worksheet_to_clear.update_cells(cell_list)
+
+    print("Board cleared. All set for a new game!")
 
 def presenting_the_game():
     """
@@ -194,6 +213,7 @@ def main():
     This function acts as a control tower
     by calling all the other functions in the right order.
     """
+    clear_board()
     presenting_the_game()
     players = naming_the_players()
     target_numbers = [[], []]
